@@ -6,7 +6,7 @@ import sqlite3
 from graphviz import Digraph
 
 def create_database():
-    # Connect to SQLite database
+    """Create the SQLite database and tables."""
     conn = sqlite3.connect('music.db')
     cursor = conn.cursor()
 
@@ -61,7 +61,7 @@ def create_database():
     conn.close()
         
 def insert_sample_data():
-    # Connect to SQLite database
+    """Insert sample data into the database."""
     conn = sqlite3.connect('music.db')
     cursor = conn.cursor()
 
@@ -115,7 +115,7 @@ def insert_sample_data():
     conn.close()
     
 def fetch_data():
-    # Connect to SQLite database
+    """Fetch and display data from the database."""
     conn = sqlite3.connect('music.db')
     cursor = conn.cursor()
 
@@ -137,6 +137,7 @@ def fetch_data():
     conn.close()
       
 def generate_er_diagram():
+    """Generate and display an ER diagram using networkx and matplotlib."""
     class Artist:
         def __init__(self, id: int, first_name: str, last_name: str):
             self.id = id
@@ -264,8 +265,9 @@ def generate_er_diagram():
     plt.title('ER Diagram')
     plt.show()
 
-# Main program
-create_database()
-insert_sample_data()
-fetch_data()
-generate_er_diagram()
+
+if __name__ == "__main__":
+    create_database()
+    insert_sample_data()
+    fetch_data()
+    generate_er_diagram()
