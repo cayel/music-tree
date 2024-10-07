@@ -1,54 +1,44 @@
 import sqlite3
+import json
 
 def insert_sample_data():
     """Insert sample data into the database."""
     conn = sqlite3.connect('music.db')
     cursor = conn.cursor()
 
-    # Insert sample data
-    cursor.execute('''
-        INSERT INTO Artist (first_name, last_name) VALUES
-        ('Nick', 'Cave'),
-        ('Blixa', 'Bargeld'),
-        ('Alexander', 'Hacke'),
-        ('Mick', 'Harvey')
-    ''')
-    cursor.execute('''
-        INSERT INTO Band (name) VALUES
-        ('Nick Cave & The Bad Seeds'),
-        ('Einstürzende Neubauten'),
-        ('The Birthday Party'),
-        ('Grinderman'),
-        ('The Boys Next Door')
-    ''')
-    cursor.execute('''
-        INSERT INTO Album (title, release_date, band_id) VALUES
-        ('Tender Prey', '2023-10-01', 1),
-        ('Kollaps', '1989-07-01', 2),
-        ('Prayers on Fire', '1981-04-01', 3),
-        ('Grinderman', '2007-03-05', 4),
-        ('Door, Door', '1979-01-01', 5)
-    ''')
-    cursor.execute('''
-        INSERT INTO BandArtist (band_id, artist_id) VALUES
-        (1, 1),
-        (1, 2),
-        (2, 2),
-        (3, 1),
-        (2, 3),
-        (4, 1),
-        (5, 1),
-        (5, 4)
-    ''')
-    cursor.execute('''
-        INSERT INTO ArtistAlbum (artist_id, album_id) VALUES
-        (1, 1),
-        (1, 4),
-        (1, 5),
-        (2, 2),
-        (3, 3),
-        (4, 4)
-    ''')
+    # Load sample data from JSON file
+    with open('./sample_data/sample_data.json', 'r') as file:
+        data = json.load(file)
+
+    # Insert artists
+    for artist in data['artists']:
+        cursor.execute('''
+            INSERT INTO Artist (first_name, last_name) VALUES (?, ?)
+        ''', (artist['first_name'], artist['last_name']))
+        
+    # Insert bands
+    for band in data['bands']:
+        cursor.execute('''
+            INSERT INTO Band (name) VALUES (?)
+        ''', (band['name'],))
+
+   # Insert albums
+    for album in data['albums']:
+        cursor.execute('''
+            INSERT INTO Album (title, release_date, band_id) VALUES (?, ?, ?)
+        ''', (album['title'], album['release_date'], album['band_id']))
+
+    # Insert band-artist relationships
+    for ba in data['band_artists']:
+        cursor.execute('''
+            INSERT INTO BandArtist (band_id, artist_id) VALUES (?, ?)
+        ''', (ba['band_id'], ba['artist_id']))
+
+    # Insert artist-album relationships
+    for aa in data['artist_albums']:
+        cursor.execute('''
+            INSERT INTO ArtistAlbum (artist_id, album_id) VALUES (?, ?)
+        ''', (aa['artist_id'], aa['album_id']))
     
     conn.commit()
     conn.close()
