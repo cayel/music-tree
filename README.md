@@ -11,6 +11,22 @@ Ce projet est une application Python qui utilise SQLite pour gérer une base de 
 - Gestion des relations entre les artistes et les groupes (`is member of`), ainsi qu'entre les artistes et les albums (`played`).
 - Visualisation des relations sous forme de graphe avec des couleurs différentes pour chaque type de nœud et de relation.
 
+## Installation
+
+1. Clonez le dépôt :
+   ```sh
+   git clone https://github.com/votre-utilisateur/music-tree.git
+   cd music-tree
+
+## Utilisation
+- Exécutez le script pour créer la base de données et visualiser les relations :
+  ```sh
+    python app.py
+- Le script va :
+    - Créer la base de données SQLite et les tables nécessaires.
+    - Ajouter des données d'exemple (artistes, groupes, albums).
+    - Visualiser les relations sous forme de graphe.
+      
 ## Modèle de données
 
 ```mermaid
