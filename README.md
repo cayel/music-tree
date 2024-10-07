@@ -21,7 +21,7 @@ Ce projet est une application Python qui utilise SQLite pour gérer une base de 
 ## Utilisation
 - Exécutez le script pour créer la base de données et visualiser les relations :
   ```sh
-    python app.py
+    python main.py
 - Le script va :
     - Créer la base de données SQLite et les tables nécessaires.
     - Ajouter des données d'exemple (artistes, groupes, albums).
