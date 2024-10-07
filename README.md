@@ -15,7 +15,7 @@ Ce projet est une application Python qui utilise SQLite pour gérer une base de 
 
 1. Clonez le dépôt :
    ```sh
-   git clone https://github.com/votre-utilisateur/music-tree.git
+   git clone https://github.com/cayel/music-tree.git
    cd music-tree
 
 ## Utilisation
