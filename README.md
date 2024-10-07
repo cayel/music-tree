@@ -10,3 +10,25 @@ Ce projet est une application Python qui utilise SQLite pour gérer une base de 
 - Ajout d'artistes, de groupes et d'albums dans la base de données.
 - Gestion des relations entre les artistes et les groupes (`is member of`), ainsi qu'entre les artistes et les albums (`played`).
 - Visualisation des relations sous forme de graphe avec des couleurs différentes pour chaque type de nœud et de relation.
+
+## Modèle de données
+
+```mermaid
+erDiagram
+    ARTIST {
+        integer id
+        string firstName
+        string lastName
+    }
+    BAND {
+        integr id
+        string name
+    }
+    ALBUM {
+        integer id
+        string title
+        date releaseDate
+    }
+    BAND only one to zero or more ALBUM : records
+    ARTIST only one to zero or more BAND : "is member of"
+    ARTIST only one to zero or more ALBUM : played
