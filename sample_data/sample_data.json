@@ -1,6 +1,6 @@
 {
     "artists": [
-        {"first_name": "Nick", "last_name": "Cave"},
+        {"first_name": "Nick", "last_name": "Cave", "discogs_id" : "a31844"},
         {"first_name": "Blixa", "last_name": "Bargeld"},
         {"first_name": "Alexander", "last_name": "Hacke"},
         {"first_name": "Mick", "last_name": "Harvey"}
@@ -10,14 +10,14 @@
         {"name": "Einstürzende Neubauten"},
         {"name": "The Birthday Party"},
         {"name": "Grinderman"},
-        {"name": "The Boys Next Door"}
+        {"name": "The Boys Next Door", "discogs_id" : "a78466"}
     ],
     "albums": [
         {"title": "Tender Prey", "release_date": "2023-10-01", "band_id": 1},
         {"title": "Kollaps", "release_date": "1989-07-01", "band_id": 2},
         {"title": "Prayers on Fire", "release_date": "1981-04-01", "band_id": 3},
         {"title": "Grinderman", "release_date": "2007-03-05", "band_id": 4},
-        {"title": "Door, Door", "release_date": "1979-01-01", "band_id": 5}
+        {"title": "Door, Door", "release_date": "1979-01-01", "discogs_id":"a78466","band_id": 5}
     ],
     "band_artists": [
         {"band_id": 1, "artist_id": 1},

@@ -17,13 +17,15 @@ def create_database():
         CREATE TABLE IF NOT EXISTS Artist (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             first_name TEXT NOT NULL,
-            last_name TEXT NOT NULL
+            last_name TEXT NOT NULL,
+            discogs_id TEXT UNIQUE
         )
     ''')
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Band (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL
+            name TEXT NOT NULL,
+            discogs_id TEXT UNIQUE
         )
     ''')
     cursor.execute('''
@@ -31,6 +33,7 @@ def create_database():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             title TEXT NOT NULL,
             release_date DATE NOT NULL,
+            discogs_id TEXT UNIQUE,
             band_id INTEGER,
             FOREIGN KEY (band_id) REFERENCES Band(id)
         )

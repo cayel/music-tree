@@ -2,10 +2,11 @@ from datetime import date
 from typing import List
 
 class Artist:
-    def __init__(self, id: int, first_name: str, last_name: str):
+    def __init__(self, id: int, first_name: str, last_name: str, discogs_id: str = None):
         self.id = id
         self.first_name = first_name
         self.last_name = last_name
+        self.discogs_id = discogs_id
         self.bands: List['Band'] = []
         self.albums: List['Album'] = []
 
@@ -19,9 +20,10 @@ class Artist:
             self.albums.append(album)
 
 class Band:
-    def __init__(self, id: int, name: str):
+    def __init__(self, id: int, name: str, discogs_id: str = None):
         self.id = id
         self.name = name
+        self.discogs_id = discogs_id
         self.records: List['Album'] = []
         self.members: List[Artist] = []
 
@@ -30,10 +32,14 @@ class Band:
             self.records.append(album)
 
 class Album:
-    def __init__(self, id: int, title: str, release_date: date):
+    def __init__(self, id: int, title: str, release_date: date, discogs_id: str = None):
         self.id = id
         self.title = title
         self.release_date = release_date
+        self.discogs = discogs_id
+    # Display the album id, title and date when the object is printed
+    def __str__(self):
+        return f"{self.id}: {self.title} ({self.release_date})"
 
 class ArtistAlbum:
     def __init__(self, artist: Artist, album: Album):
