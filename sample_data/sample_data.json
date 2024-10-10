@@ -33,6 +33,7 @@
     ],
     "artist_albums": [
         {"artist_id": 1, "album_id": 1},
+        {"artist_id": 1, "album_id": 3},
         {"artist_id": 1, "album_id": 4},
         {"artist_id": 1, "album_id": 5},
         {"artist_id": 2, "album_id": 2},

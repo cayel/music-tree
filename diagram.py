@@ -21,6 +21,19 @@ def add_edge_recorded(G, band, album):
 def add_edge_played(G, artist, album):
     G.add_edge(artist, album, label='played')
     
+def get_node_artist_by_id(G, id):
+    return [n for n in G.nodes if isinstance(n, Artist) and n.id == id][0]
+
+def get_node_band_by_id(G, id):
+    return [n for n in G.nodes if isinstance(n, Band) and n.id == id][0]
+
+def get_node_album_by_id(G, id):
+    albums = [n for n in G.nodes if isinstance(n, Album) and n.id == id]
+    if not albums:
+        return None
+    else: 
+        return albums[0]
+
 def generate_er_diagram(artist_id: int = None):
     """
     Generate and display an ER diagram using networkx and matplotlib.
@@ -69,7 +82,7 @@ def generate_er_diagram(artist_id: int = None):
         for row in band_artist_rows:
             band = [n for n in G.nodes if isinstance(n, Band) and n.id == row[0]][0]
             artist = [n for n in G.nodes if isinstance(n, Artist) and n.id == row[1]][0]
-            G.add_edge(artist, band, label='member')
+            add_edge_member(G, artist, band)
         
         # Add all edges between bands and albums
         cursor.execute('SELECT band_id, id FROM Album')
@@ -77,7 +90,7 @@ def generate_er_diagram(artist_id: int = None):
         for row in band_album_rows:
             band = [n for n in G.nodes if isinstance(n, Band) and n.id == row[0]][0]
             album = [n for n in G.nodes if isinstance(n, Album) and n.id == row[1]][0]
-            G.add_edge(band, album, label='recorded')
+            add_edge_recorded(G, band, album)
         
         # Add all edges between artists and albums
         cursor.execute('SELECT artist_id, album_id FROM ArtistAlbum')
@@ -85,7 +98,7 @@ def generate_er_diagram(artist_id: int = None):
         for row in artist_album_rows:
             artist = [n for n in G.nodes if isinstance(n, Artist) and n.id == row[0]][0]
             album = [n for n in G.nodes if isinstance(n, Album) and n.id == row[1]][0]
-            G.add_edge(artist, album, label='played')
+            add_edge_played(G, artist, album)  
     else:
         # Add nodes for the specified artist
         cursor.execute('SELECT id, first_name, last_name FROM Artist WHERE id = ?', (artist_id,))
@@ -128,13 +141,17 @@ def generate_er_diagram(artist_id: int = None):
                 JOIN Band b ON al.band_id = b.id
                 JOIN BandArtist ba ON b.id = ba.band_id
                 WHERE ba.artist_id = ?
-            ''', (artist_id,))
+            ''', (artist_id,))  
             band_album_rows = cursor.fetchall()
             for row in band_album_rows:
-                album = Album(row[0], row[1], row[2])
-                band = [n for n in G.nodes if isinstance(n, Band) and n.id == row[3]][0]
-                if album not in G.nodes:
-                    add_node_album(G, album)
+                band = get_node_band_by_id(G, row[3])
+                print(band.name)
+                album = get_node_album_by_id(G, row[0])
+                if album :
+                    print(album.title)
+                else:
+                    add_node_album(G, Album(row[0], row[1], row[2]))
+                    album = get_node_album_by_id(G, row[0])
                 add_edge_recorded(G, band, album)
         
     conn.close()
