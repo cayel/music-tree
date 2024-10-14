@@ -1,0 +1,47 @@
+{
+    "artists": [
+        {"first_name": "Nick", "last_name": "Cave", "discogs_id" : "a31844"},
+        {"first_name": "Mick", "last_name": "Harvey", "discogs_id" : "a31843"},
+        {"first_name": "Phill", "last_name": "Calvert", "discogs_id" : "a260121"},
+        {"first_name": "Tracy", "last_name": "Pew", "discogs_id" : "a260120"},
+        {"first_name": "Rowland", "last_name": "S. Howard", "discogs_id" : "a83234"}
+    ],
+    "bands": [
+        {"name": "The Boys Next Door", "discogs_id" : "a78466"},
+        {"name": "The Birthday Party", "discogs_id" : "a40247"}
+    ],
+    "albums": [
+        {"title": "Door, Door", "release_date": "1979-05-01", "discogs_id":"m38657","band_id": 1},
+        {"title": "The Birthday Party", "release_date": "1980-02-01", "discogs_id":"m275954","band_id": 1},
+        {"title": "Prayers on Fire", "release_date": "1981-04-01", "discogs_id":"m20089","band_id": 2}
+    ],
+    "band_artists": [
+        {"band_id": 1, "artist_id": 1},
+        {"band_id": 1, "artist_id": 2},
+        {"band_id": 1, "artist_id": 3},
+        {"band_id": 1, "artist_id": 4},
+        {"band_id": 1, "artist_id": 5},
+        {"band_id": 2, "artist_id": 1},
+        {"band_id": 2, "artist_id": 2},
+        {"band_id": 2, "artist_id": 3},
+        {"band_id": 2, "artist_id": 4},
+        {"band_id": 2, "artist_id": 5}
+    ],
+    "artist_albums": [
+        {"artist_id": 1, "album_id": 1},
+        {"artist_id": 2, "album_id": 1},
+        {"artist_id": 3, "album_id": 1},
+        {"artist_id": 4, "album_id": 1},
+        {"artist_id": 5, "album_id": 1},
+        {"artist_id": 1, "album_id": 2},
+        {"artist_id": 2, "album_id": 2},
+        {"artist_id": 3, "album_id": 2},
+        {"artist_id": 4, "album_id": 2},
+        {"artist_id": 5, "album_id": 2},
+        {"artist_id": 1, "album_id": 3},
+        {"artist_id": 2, "album_id": 3},
+        {"artist_id": 3, "album_id": 3},
+        {"artist_id": 4, "album_id": 3},
+        {"artist_id": 5, "album_id": 3}
+    ]
+}

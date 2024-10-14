@@ -1,13 +1,13 @@
 import sqlite3
 import json
 
-def insert_sample_data():
+def insert_data(filename):
     """Insert sample data into the database."""
     conn = sqlite3.connect('music.db')
     cursor = conn.cursor()
 
     # Load sample data from JSON file
-    with open('./sample_data/sample_data.json', 'r') as file:
+    with open(filename, 'r') as file:
         data = json.load(file)
 
     # Insert artists

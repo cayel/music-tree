@@ -33,6 +33,69 @@ def get_node_album_by_id(G, id):
         return None
     else: 
         return albums[0]
+    
+def add_node_all_artists(G):
+    conn = sqlite3.connect('music.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT id, first_name, last_name FROM Artist')
+    artist_rows = cursor.fetchall()
+    for row in artist_rows:
+        artist = Artist(row[0], row[1], row[2])
+        add_node_artist(G, artist)
+    conn.close()
+
+def add_node_all_bands(G):
+    conn = sqlite3.connect('music.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT id, name FROM Band')
+    band_rows = cursor.fetchall()
+    for row in band_rows:
+        band = Band(row[0], row[1])
+        add_node_band(G, band)
+    conn.close()
+
+def add_node_all_albums(G):
+    conn = sqlite3.connect('music.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT id, title, release_date FROM Album')
+    album_rows = cursor.fetchall()
+    for row in album_rows:
+        album = Album(row[0], row[1], row[2])
+        add_node_album(G, album)
+    conn.close()
+
+def add_all_edge_member(G):
+    conn = sqlite3.connect('music.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT band_id, artist_id FROM BandArtist')
+    band_artist_rows = cursor.fetchall()
+    for row in band_artist_rows:
+        band = get_node_band_by_id(G, row[0])
+        artist = get_node_artist_by_id(G, row[1])
+        add_edge_member(G, artist, band)
+    conn.close()
+
+def add_all_edge_played(G):
+    conn = sqlite3.connect('music.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT artist_id, album_id FROM ArtistAlbum')
+    artist_album_rows = cursor.fetchall()
+    for row in artist_album_rows:
+        artist = get_node_artist_by_id(G, row[0])
+        album = get_node_album_by_id(G, row[1])
+        add_edge_played(G, artist, album)
+    conn.close()
+
+def add_all_edge_recorded(G):
+    conn = sqlite3.connect('music.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT band_id, id FROM Album')
+    band_album_rows = cursor.fetchall()
+    for row in band_album_rows:
+        band = get_node_band_by_id(G, row[0])
+        album = get_node_album_by_id(G, row[1])
+        add_edge_recorded(G, band, album)
+    conn.close()
 
 def generate_er_diagram(artist_id: int = None):
     """
@@ -55,50 +118,12 @@ def generate_er_diagram(artist_id: int = None):
     cursor = conn.cursor()
 
     if artist_id is None:
-        # Add all artists
-        cursor.execute('SELECT id, first_name, last_name FROM Artist')
-        artist_rows = cursor.fetchall()
-        for row in artist_rows:
-            artist = Artist(row[0], row[1], row[2])
-            add_node_artist(G, artist)
-        
-        # Add all bands
-        cursor.execute('SELECT id, name FROM Band')
-        band_rows = cursor.fetchall()
-        for row in band_rows:
-            band = Band(row[0], row[1])
-            add_node_band(G, band)
-        
-        # Add all albums
-        cursor.execute('SELECT id, title, release_date FROM Album')
-        album_rows = cursor.fetchall()
-        for row in album_rows:
-            album = Album(row[0], row[1], row[2])
-            add_node_album(G, album)
-        
-        # Add all edges between artists and bands
-        cursor.execute('SELECT band_id, artist_id FROM BandArtist')
-        band_artist_rows = cursor.fetchall()
-        for row in band_artist_rows:
-            band = [n for n in G.nodes if isinstance(n, Band) and n.id == row[0]][0]
-            artist = [n for n in G.nodes if isinstance(n, Artist) and n.id == row[1]][0]
-            add_edge_member(G, artist, band)
-        
-        # Add all edges between bands and albums
-        cursor.execute('SELECT band_id, id FROM Album')
-        band_album_rows = cursor.fetchall()
-        for row in band_album_rows:
-            band = [n for n in G.nodes if isinstance(n, Band) and n.id == row[0]][0]
-            album = [n for n in G.nodes if isinstance(n, Album) and n.id == row[1]][0]
-            add_edge_recorded(G, band, album)
-        
-        # Add all edges between artists and albums
-        cursor.execute('SELECT artist_id, album_id FROM ArtistAlbum')
-        artist_album_rows = cursor.fetchall()
-        for row in artist_album_rows:
-            artist = [n for n in G.nodes if isinstance(n, Artist) and n.id == row[0]][0]
-            album = [n for n in G.nodes if isinstance(n, Album) and n.id == row[1]][0]
-            add_edge_played(G, artist, album)  
+        add_node_all_artists(G)
+        add_node_all_bands(G)
+        add_all_edge_member(G)
+        add_node_all_albums(G)
+        add_all_edge_played(G)
+        add_all_edge_recorded(G)
     else:
         # Add nodes for the specified artist
         cursor.execute('SELECT id, first_name, last_name FROM Artist WHERE id = ?', (artist_id,))
