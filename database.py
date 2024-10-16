@@ -21,10 +21,14 @@ def db_bands_count():
     count = execute_query(query)[0][0]
     return count
 
-def load_albums_with_band():
+def load_albums_with_band(band_name=None):
     """Load albums with their respective band names from the database."""
-    query = '''SELECT a.title, b.name FROM Album a JOIN Band b ON a.band_id = b.id'''
-    rows = execute_query(query)
+    if band_name:
+        query = '''SELECT a.title, b.name FROM Album a JOIN Band b ON a.band_id = b.id WHERE b.name = ?'''
+        rows = execute_query(query, (band_name,))
+    else:
+        query = '''SELECT a.title, b.name FROM Album a JOIN Band b ON a.band_id = b.id'''
+        rows = execute_query(query)
     return rows
 
 def create_database():

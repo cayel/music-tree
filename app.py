@@ -1,5 +1,5 @@
 import streamlit as st
-from database import db_albums_count, db_bands_count, load_albums_with_band
+from database import db_albums_count, db_bands_count, load_albums_with_band,execute_query
 from lastfm import get_lastfm_album_image
 from PIL import Image
 
@@ -32,11 +32,20 @@ def main():
         </div>
     """, unsafe_allow_html=True)
 
-    albums = load_albums_with_band()
-    cols = st.columns(3)  # Create three columns
+    # Sélecteur de groupe
+    band_name = st.selectbox("Sélectionnez un groupe", ["Tous"] + [row[0] for row in execute_query('SELECT name FROM Band')])
+    if band_name == "Tous":
+        albums = load_albums_with_band()
+    else:
+        albums = load_albums_with_band(band_name)
+
+    # Slider pour sélectionner le nombre de colonnes
+    num_columns = st.slider("Sélectionnez le nombre de colonnes", min_value=1, max_value=5, value=3)
+
+    cols = st.columns(num_columns)  # Create three columns
 
     for i, album in enumerate(albums):
-        with cols[i % 3]:  # Distribute albums among columns
+        with cols[i % num_columns]:  # Distribute albums among columns
             image = get_lastfm_album_image(album[1], album[0])
             display_album_card(image, album[1])
 
