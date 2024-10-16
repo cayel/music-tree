@@ -3,6 +3,24 @@ import sqlite3
 from lastfm import get_lastfm_album_image
 from PIL import Image
 
+def db_albums_count():
+    """Count the number of albums in the database."""
+    conn = sqlite3.connect('music.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT COUNT(*) FROM Album')
+    count = cursor.fetchone()[0]
+    conn.close()
+    return count
+
+def db_bands_count():
+    """Count the number of bands in the database."""
+    conn = sqlite3.connect('music.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT COUNT(*) FROM Band')
+    count = cursor.fetchone()[0]
+    conn.close()
+    return count
+
 def load_albums_with_band():
     """Load albums with their respective band names from the database."""
     conn = sqlite3.connect('music.db')
@@ -28,6 +46,18 @@ def main():
     """Main function to set up the Streamlit app and display albums."""
     st.title("Music Tree App")
     st.write("Welcome to the Music Tree App!")
+
+    # Compter les albums et les groupes
+    albums_count = db_albums_count()
+    bands_count = db_bands_count()
+
+    # Afficher le texte formaté
+    st.markdown(f"""
+        <div style="text-align: left; font-size: 24px; color: black;">
+            <p>Il y a <strong>{albums_count}</strong> albums dans la base de données.</p>
+            <p>Il y a <strong>{bands_count}</strong> groupes dans la base de données.</p>
+        </div>
+    """, unsafe_allow_html=True)
 
     albums = load_albums_with_band()
     cols = st.columns(3)  # Create three columns
