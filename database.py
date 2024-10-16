@@ -1,5 +1,32 @@
 import sqlite3
 
+def execute_query(query, params=()):
+    """Execute a query and return the results."""
+    conn = sqlite3.connect('music.db')
+    cursor = conn.cursor()
+    cursor.execute(query, params)
+    results = cursor.fetchall()
+    conn.close()
+    return results
+
+def db_albums_count():
+    """Count the number of albums in the database."""
+    query = 'SELECT COUNT(*) FROM Album'
+    count = execute_query(query)[0][0]
+    return count
+
+def db_bands_count():
+    """Count the number of bands in the database."""
+    query = 'SELECT COUNT(*) FROM Band'
+    count = execute_query(query)[0][0]
+    return count
+
+def load_albums_with_band():
+    """Load albums with their respective band names from the database."""
+    query = '''SELECT a.title, b.name FROM Album a JOIN Band b ON a.band_id = b.id'''
+    rows = execute_query(query)
+    return rows
+
 def create_database():
     """Create the SQLite database and tables."""
     conn = sqlite3.connect('music.db')

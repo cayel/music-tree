@@ -1,34 +1,7 @@
 import streamlit as st
-import sqlite3
+from database import db_albums_count, db_bands_count, load_albums_with_band
 from lastfm import get_lastfm_album_image
 from PIL import Image
-
-def db_albums_count():
-    """Count the number of albums in the database."""
-    conn = sqlite3.connect('music.db')
-    cursor = conn.cursor()
-    cursor.execute('SELECT COUNT(*) FROM Album')
-    count = cursor.fetchone()[0]
-    conn.close()
-    return count
-
-def db_bands_count():
-    """Count the number of bands in the database."""
-    conn = sqlite3.connect('music.db')
-    cursor = conn.cursor()
-    cursor.execute('SELECT COUNT(*) FROM Band')
-    count = cursor.fetchone()[0]
-    conn.close()
-    return count
-
-def load_albums_with_band():
-    """Load albums with their respective band names from the database."""
-    conn = sqlite3.connect('music.db')
-    cursor = conn.cursor()
-    cursor.execute('''SELECT a.title, b.name FROM Album a JOIN Band b ON a.band_id = b.id''')
-    rows = cursor.fetchall()
-    conn.close()
-    return rows
 
 def display_album_card(image_url, caption):
     """Display an image card with a given URL and caption."""
