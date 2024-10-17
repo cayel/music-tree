@@ -1,15 +1,6 @@
 import streamlit as st
 from data import insert_album
-import sqlite3
-
-def load_band_list():
-    # Load the list of bands from the database
-    conn = sqlite3.connect('music.db')
-    cursor = conn.cursor()
-    cursor.execute('SELECT id, name FROM Band')
-    bands = cursor.fetchall()
-    conn.close()
-    return bands
+from band.band_query import load_band_list
 
 def display_album_form():
     # Formulaire pour enregistrer un album
