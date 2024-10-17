@@ -6,6 +6,7 @@ from artist.artist_form import display_artist_form
 from band.band_form import display_band_form
 from album.album_form import display_album_form
 from artist.artist_band_form import display_artist_band_form
+from artist.artist_album_form import display_artist_album_form
 
 def display_album_card(image_url, caption):
     """Display an image card with a given URL and caption."""
@@ -71,6 +72,9 @@ def main():
 
         with st.expander("Créer une relation Artiste-Groupe"):
             display_artist_band_form()
+
+        with st.expander("Créer une relation Artiste-Album"):
+            display_artist_album_form()
 
 if __name__ == "__main__":
     main()

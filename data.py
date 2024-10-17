@@ -1,6 +1,26 @@
 import sqlite3
 import json
 
+def insert_artist_album_relation(artist_id, album_id):
+    """Insert a relation between an artist and an album."""
+    ret = True
+    try:
+        conn = sqlite3.connect('music.db')
+        cursor = conn.cursor()
+
+        cursor.execute('''
+            INSERT INTO ArtistAlbum (artist_id, album_id) VALUES (?, ?)
+        ''', (artist_id, album_id))
+
+        conn.commit()
+    except sqlite3.Error as e:
+        print(f"An error occurred: {e}")
+        ret = False
+    finally:
+        if conn:
+            conn.close()
+        return ret
+
 def insert_artist_band_relation(artist_id, band_id):
     """Insert a relation between an artist and a band."""
     ret = True
@@ -103,18 +123,10 @@ def insert_data(filename):
     for ba in data['band_artists']:
         insert_artist_band_relation(ba['artist_id'], ba['band_id'])
 
-    conn = sqlite3.connect('music.db')
-    cursor = conn.cursor()
-    
     # Insert artist-album relationships
     for aa in data['artist_albums']:
-        cursor.execute('''
-            INSERT INTO ArtistAlbum (artist_id, album_id) VALUES (?, ?)
-        ''', (aa['artist_id'], aa['album_id']))
+        insert_artist_album_relation(aa['artist_id'], aa['album_id'])
     
-    conn.commit()
-    conn.close()
-
 def fetch_data():
     """Fetch and display data from the database."""
     conn = sqlite3.connect('music.db')
