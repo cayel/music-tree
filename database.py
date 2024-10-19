@@ -1,4 +1,15 @@
 import sqlite3
+import logging
+
+def database_exists():
+    """Check if the database exists."""
+    # Check if file music.db exists
+    try:
+        with open('music.db', 'r'):
+            pass
+    except FileNotFoundError:
+        return False
+    return True
 
 def execute_query(query, params=()):
     """Execute a query and return the results."""
@@ -44,6 +55,7 @@ def create_database():
     cursor.execute('DROP TABLE IF EXISTS ArtistAlbum')
     
     # Create tables
+    logging.info('Creation de la table Artist') 
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Artist (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -52,6 +64,9 @@ def create_database():
             discogs_id TEXT UNIQUE
         )
     ''')
+    logging.info('Table Artist créée')
+    
+    logging.info('Creation de la table Band')
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Band (
             id INTEGER PRIMARY KEY AUTOINCREMENT,

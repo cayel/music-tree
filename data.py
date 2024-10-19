@@ -101,12 +101,20 @@ def insert_band(name, discogs_id):
             conn.close()
         return ret
 
-def insert_data(filename):
+def insert_uploaded_file(uploaded_file):
+    # Read the content of the uploaded file
+    file_content = uploaded_file.read()
+    data = json.loads(file_content)
+    insert_data(data)
+
+def insert_local_file(filename):
     """Insert sample data into the database."""
     # Load sample data from JSON file
     with open(filename, 'r') as file:
         data = json.load(file)
+    insert_data(data)
 
+def insert_data(data):
     # Insert artists
     for artist in data['artists']:
         insert_artist(artist['first_name'], artist['last_name'], artist['discogs_id'])

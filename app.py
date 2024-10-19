@@ -1,5 +1,8 @@
 import streamlit as st
-from database import db_albums_count, db_bands_count, load_albums_with_band,execute_query
+from database import (
+    db_albums_count, db_bands_count, load_albums_with_band, execute_query, 
+    create_database, database_exists
+)
 from lastfm import get_lastfm_album_image
 from PIL import Image
 from artist.artist_form import display_artist_form
@@ -7,6 +10,8 @@ from band.band_form import display_band_form
 from album.album_form import display_album_form
 from artist.artist_band_form import display_artist_band_form
 from artist.artist_album_form import display_artist_album_form
+from data import insert_local_file
+import logging
 
 def display_album_card(image_url, caption):
     """Display an image card with a given URL and caption."""
@@ -20,6 +25,9 @@ def display_album_card(image_url, caption):
     )
 
 def main():
+    # Configurer le logger avec le niveau de journalisation à DEBUG
+    logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+
     # Barre latérale avec un menu
     menu = ["Accueil", "Albums", "Admin"]
     choice = st.sidebar.selectbox("Menu", menu)
@@ -61,20 +69,27 @@ def main():
         st.title("Administration")
         st.write("Administration de la base de données")
 
-        with st.expander("Créer un artiste"):
-            display_artist_form()
-
-        with st.expander("Créer un groupe"):
-            display_band_form()
-
-        with st.expander("Créer un album"):
-            display_album_form()
-
-        with st.expander("Créer une relation Artiste-Groupe"):
-            display_artist_band_form()
-
-        with st.expander("Créer une relation Artiste-Album"):
-            display_artist_album_form()
+        if database_exists():
+            with st.expander("Créer un artiste"):
+                display_artist_form()
+            with st.expander("Créer un groupe"):
+                display_band_form()
+            with st.expander("Créer un album"):
+                display_album_form()
+            with st.expander("Créer une relation Artiste-Groupe"):
+                display_artist_band_form()
+            with st.expander("Créer une relation Artiste-Album"):
+                display_artist_album_form()
+        else:
+            with st.expander("Initialiser la base de données"):
+                if st.button("Initialiser la base de données"):
+                    logging.info("Création de la base de données")
+                    create_database()
+                    logging.info("Base de données créée avec succès")
+                    logging.info("Insertion des données du fichier json")
+                    insert_local_file('./sample_data/data.json')
+                    logging.info("Données insérées avec succès")
+                    st.success("Données insérées avec succès")
 
 if __name__ == "__main__":
     main()
