@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import networkx as nx
 import sqlite3
 from models import Artist, Band, Album
+import streamlit as st
 
 def add_node_artist(G, artist):
     G.add_node(artist, id=artist.id, label=f'{artist.first_name} {artist.last_name}')
@@ -112,6 +113,7 @@ def generate_er_diagram(artist_id: int = None):
 
     The graph is displayed using matplotlib.
     """
+    fig, ax = plt.subplots()
     G = nx.DiGraph()
 
     conn = sqlite3.connect('music.db')
@@ -211,6 +213,5 @@ def generate_er_diagram(artist_id: int = None):
     nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_size=10)
     nx.draw_networkx_edges(G, pos, edge_color=edge_colors, arrows=True)
 
-    title = f'ER Diagram for Artist ID {artist_id}' if artist_id else 'ER Diagram for All Artists'
-    plt.title(title)
-    plt.show()
+    st.pyplot(fig)
+   

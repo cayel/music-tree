@@ -12,6 +12,7 @@ from artist.artist_band_form import display_artist_band_form
 from artist.artist_album_form import display_artist_album_form
 from data import insert_local_file, export_data
 import logging
+from diagram import generate_er_diagram
 
 def display_album_card(image_url, caption):
     """Display an image card with a given URL and caption."""
@@ -26,10 +27,10 @@ def display_album_card(image_url, caption):
 
 def main():
     # Configurer le logger avec le niveau de journalisation à DEBUG
-    logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+    # logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
     # Barre latérale avec un menu
-    menu = ["Accueil", "Albums", "Admin"]
+    menu = ["Accueil", "Albums", "Réseau", "Admin"]
     choice = st.sidebar.selectbox("Menu", menu)
 
     if choice == "Accueil":
@@ -65,6 +66,13 @@ def main():
             with cols[i % num_columns]:  # Distribute albums among columns
                 image = get_lastfm_album_image(album[1], album[0])
                 display_album_card(image, album[1])
+    elif choice == "Réseau":
+        st.title("Réseau")
+        st.write("Visualisation du réseau")
+
+        # Afficher le graphique ici
+        generate_er_diagram()
+
     elif choice == "Admin":
         st.title("Administration")
         st.write("Administration de la base de données")
