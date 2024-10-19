@@ -153,3 +153,45 @@ def fetch_data():
         print(row)
 
     conn.close()
+
+def export_data():
+    """Export data from the database to a JSON file."""
+    conn = sqlite3.connect('music.db')
+    cursor = conn.cursor()
+
+    cursor.execute('''
+        SELECT * FROM Artist
+    ''')
+    artists = cursor.fetchall()
+
+    cursor.execute('''
+        SELECT * FROM Band
+    ''')
+    bands = cursor.fetchall()
+
+    cursor.execute('''
+        SELECT * FROM Album
+    ''')
+    albums = cursor.fetchall()
+
+    cursor.execute('''
+        SELECT * FROM BandArtist
+    ''')
+    band_artists = cursor.fetchall()
+
+    cursor.execute('''
+        SELECT * FROM ArtistAlbum
+    ''')
+    artist_albums = cursor.fetchall()
+
+    conn.close()
+
+    data = {
+        'artists': artists,
+        'bands': bands,
+        'albums': albums,
+        'band_artists': band_artists,
+        'artist_albums': artist_albums
+    }
+
+    return(json.dumps(data, indent=4))

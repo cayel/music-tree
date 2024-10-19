@@ -10,7 +10,7 @@ from band.band_form import display_band_form
 from album.album_form import display_album_form
 from artist.artist_band_form import display_artist_band_form
 from artist.artist_album_form import display_artist_album_form
-from data import insert_local_file
+from data import insert_local_file, export_data
 import logging
 
 def display_album_card(image_url, caption):
@@ -80,6 +80,16 @@ def main():
                 display_artist_band_form()
             with st.expander("Créer une relation Artiste-Album"):
                 display_artist_album_form()
+            with st.expander("Exporter les données dans un fichier json"):
+                if st.button("Exporter les données"):
+                    json_file = export_data()
+                    st.download_button(
+                        label="Télécharger le fichier json",
+                        data=json_file,
+                        file_name="data.json",
+                        mime="text/json",
+                    )
+
         else:
             with st.expander("Initialiser la base de données"):
                 if st.button("Initialiser la base de données"):
