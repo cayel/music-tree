@@ -12,43 +12,7 @@ from artist.artist_band_form import display_artist_band_form
 from artist.artist_album_form import display_artist_album_form
 from data import insert_local_file, export_data
 import logging
-from diagram import generate_er_diagram
-from pyvis.network import Network
-import matplotlib.pyplot as plt
-import streamlit.components.v1 as components
-from streamlit_flow import streamlit_flow
-from streamlit_flow.elements import StreamlitFlowNode, StreamlitFlowEdge
-from streamlit_flow.state import StreamlitFlowState
-
-def diagram_flow():
-    nodes = [StreamlitFlowNode(id='1', pos=(100, 100), data={'content': 'Node 1'}, node_type='input', source_position='right'),
-            StreamlitFlowNode('2', (350, 50), {'content': 'Node 2'}, 'default', 'right', 'left'),
-            StreamlitFlowNode('3', (350, 150), {'content': 'Node 3'}, 'default', 'right', 'left'),
-            StreamlitFlowNode('4', (600, 100), {'content': 'Node 4'}, 'output', target_position='left')]
-
-    edges = [StreamlitFlowEdge('1-2', '1', '2', animated=True),
-            StreamlitFlowEdge('1-3', '1', '3', animated=True),
-            StreamlitFlowEdge('2-4', '2', '4', animated=True),
-            StreamlitFlowEdge('3-4', '3', '4', animated=True)]
-
-    state = StreamlitFlowState(nodes, edges)
-
-    streamlit_flow('minimap_controls_flow',
-                    state,
-                    fit_view=True,
-                    show_minimap=True,
-                    show_controls=True,
-                    hide_watermark=True)
-
-def test_network():
-    g = Network()
-    g.add_nodes([1,2,3], value=[10, 100, 400],
-                            title=['I am node 1', 'node 2 here', 'and im node 3'],
-                            x=[21.4, 54.2, 11.2],
-                            y=[100.2, 23.54, 32.1],
-                            label=['NODE 1', 'NODE 2', 'NODE 3'],
-                            color=['#00ff1e', '#162347', '#dd4b39'])
-    return g
+from diagram_flow import diagram_flow
 
 def display_album_card(image_url, caption):
     """Display an image card with a given URL and caption."""
