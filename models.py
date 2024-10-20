@@ -6,6 +6,7 @@ class Artist:
         self.id = id
         self.first_name = first_name
         self.last_name = last_name
+        self.full_name = f"{first_name} {last_name}"
         self.discogs_id = discogs_id
         self.bands: List['Band'] = []
         self.albums: List['Album'] = []
