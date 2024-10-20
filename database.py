@@ -6,7 +6,17 @@ def database_exists():
     # Check if file music.db exists
     try:
         with open('music.db', 'r'):
-            pass
+            # Table exists
+            # Check if table Artist exists
+            conn = sqlite3.connect('music.db')
+            cursor = conn.cursor()
+            cursor.execute('SELECT name FROM sqlite_master WHERE type="table" AND name="Artist"')
+            result = cursor.fetchone()
+            conn.close()
+            if result:
+                return True
+            else:
+                return False 
     except FileNotFoundError:
         return False
     return True
