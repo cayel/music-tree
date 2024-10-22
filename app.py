@@ -13,6 +13,7 @@ from artist.artist_album_form import display_artist_album_form
 from data import insert_local_file, export_data
 import logging
 from diagram_flow import diagram_flow
+from lastfm import get_lastfm_topsters, build_album_grid
 
 def display_album_card(image_url, caption):
     """Display an image card with a given URL and caption."""
@@ -30,7 +31,7 @@ def main():
     # logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
     # Barre latérale avec un menu
-    menu = ["Accueil", "Albums", "Réseau", "Admin"]
+    menu = ["Accueil", "Albums", "Réseau", "Topsters", "Admin"]
     choice = st.sidebar.selectbox("Menu", menu)
 
     if choice == "Accueil":
@@ -72,6 +73,15 @@ def main():
 
         diagram_flow()
 
+    elif choice == "Topsters":
+        st.title("Topsters")
+        st.write("Création de Topsters")
+        # select number of columns
+        num_columns = st.slider("Sélectionnez le nombre de colonnes", min_value=3, max_value=7, value=5)   
+        # select color of the background
+        color = st.color_picker("Sélectionnez la couleur de fond", "#000000")
+        albums = get_lastfm_topsters()
+        build_album_grid(albums, num_columns, color)
 
     elif choice == "Admin":
         st.title("Administration")
